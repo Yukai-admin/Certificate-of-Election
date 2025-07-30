@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>當選證明書 PDF 匯出 (pdfmake)</title>
+<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.7/build/pdfmake.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.7/build/vfs_fonts.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 10px; background: #f9f9f9; }
+  label { display: block; margin-top: 15px; }
+  input, button { width: 100%; padding: 8px; margin-top: 5px; }
+  button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #45a049; }
+</style>
+</head>
+<body>
+  <h2>當選證明書確認</h2>
+  <form id="certForm">
+    <label>姓名：
+      <input type="text" name="name" required placeholder="請輸入您的姓名" />
+    </label>
+    <label>任期開始日期：
+      <input type="date" name="term_start" value="2025-09-01" required />
+    </label>
+    <label>任期結束日期：
+      <input type="date" name="term_end" value="2029-08-31" required />
+    </label>
+    <button type="submit">確認並匯出 PDF</button>
+  </form>
+
+  <script>
+    document.getElementById('certForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const name = formData.get('name');
+      const start = formData.get('term_start');
+      const end = formData.get('term_end');
+      const dateStr = new Date().toISOString().split('T')[0];
+
+      const docDefinition = {
+        content: [
+          { text: '中央選舉委員會', style: 'header', alignment: 'center' },
+          { text: '當選證明書', style: 'subheader', alignment: 'center', margin: [0, 10, 0, 20] },
+          { text: `姓名：${name}`, style: 'content' },
+          { text: `經本屆市民代表選舉投票結果，確認您為當選人，\n特此頒發當選證明書。`, style: 'content', margin: [0, 10, 0, 10] },
+          { text: `任期自 ${start} 起 至 ${end} 止。`, style: 'content' },
+          { text: `\n證明日期：${dateStr}`, style: 'content' },
+          { text: '\n中央選舉委員會蓋章：\n\n____________________', style: 'content' }
+        ],
+        styles: {
+          header: { fontSize: 22, bold: true },
+          subheader: { fontSize: 18, bold: true },
+          content: { fontSize: 14 }
+        },
+        defaultStyle: {
+          font: 'NotoSans'
+        }
+      };
+
+      pdfMake.createPdf(docDefinition).download(`${name}_當選證明書.pdf`);
+    });
+  </script>
+</body>
+</html>

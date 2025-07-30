@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>當選證明書確認</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 10px; background: #f9f9f9; }
+  label { display: block; margin-top: 15px; }
+  input, button { width: 100%; padding: 8px; margin-top: 5px; }
+  button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #45a049; }
+</style>
+</head>
+<body>
+  <h2>當選證明書確認</h2>
+  <form id="certForm">
+    <label>姓名：
+      <input type="text" name="name" required placeholder="請輸入您的姓名" />
+    </label>
+    <label>任期開始日期：
+      <input type="date" name="term_start" value="2025-09-01" required />
+    </label>
+    <label>任期結束日期：
+      <input type="date" name="term_end" value="2029-08-31" required />
+    </label>
+    <button type="submit">確認並送出</button>
+  </form>
+
+  <script>
+    document.getElementById('certForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      alert(`感謝 ${formData.get('name')} 確認當選證明書資訊，任期自 ${formData.get('term_start')} 至 ${formData.get('term_end')}。`);
+      // 這裡可加入 AJAX 傳送資料到伺服器或 Firebase
+    });
+  </script>
+</body>
+</html>
